@@ -10,12 +10,12 @@ contract BaseCoin is TRC20able {
 
     using SafeMath for uint256;
 
-    mapping (address => uint256) private _balances;
+    mapping (address => uint256) internal _balances;
 
-    mapping (address => mapping (address => uint256)) private _allowed;
+    mapping (address => mapping (address => uint256)) internal _allowed;
 
-    uint256 private _totalSupply;
-    address private _ownerAddress;
+    uint256 internal _totalSupply;
+    address internal _ownerAddress;
 
     constructor(uint256 totalSupply) internal {
         _totalSupply = totalSupply;
@@ -106,8 +106,6 @@ contract BaseCoin is TRC20able {
      * @param value The amount to be transferred.
      */
     function _transfer(address from, address to, uint256 value) internal {
-        require(to != address(0), "Cannot transfer allowed funds as owner!");
-
         _balances[from] = _balances[from].sub(value);
         _balances[to] = _balances[to].add(value);
         emit Transfer(from, to, value);
@@ -121,7 +119,7 @@ contract BaseCoin is TRC20able {
      * @param value The amount that will be created.
      */
     function _mint(address account, uint256 value) internal {
-        require(account == _ownerAddress, "Only the owner can mint new cookies!");
+        //TODO remove require(account == _ownerAddress, "Only the owner can mint new cookies!");
 
         _totalSupply = _totalSupply.add(value);
         _balances[account] = _balances[account].add(value);
