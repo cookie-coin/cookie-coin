@@ -22,6 +22,7 @@ library CookieOperations {
         MonsterEntry[] monsterEntries;
         uint256 count;
         uint256 currentIndex;
+        MonsterEntry[] cleanedEntries;
     }
 
     function init(CookieMonsters storage self) internal {

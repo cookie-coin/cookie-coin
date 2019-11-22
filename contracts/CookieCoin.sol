@@ -13,6 +13,9 @@ contract CookieCoin is BaseCoin {
 
     uint256 constant MINIMUM_TRANSACTION_VALUE = 100;
 
+    event CookiesShared(
+        uint256 value
+    );
 
     constructor(uint256 totalSupply) BaseCoin(totalSupply) public {
         cookieMonsters.init();
@@ -59,7 +62,7 @@ contract CookieCoin is BaseCoin {
     function _shareCookies(uint256 value) internal {
         uint256 cookiesToMint = value.div(MINIMUM_TRANSACTION_VALUE);
 
-        for (uint256 cookieCount = cookiesToMint; cookieCount > 0;) {
+        for (uint256 cookieCount = cookiesToMint; cookieCount > 0 ;) {
             CookieOperations.MonsterEntry memory entry = cookieMonsters.getNextMonsterAddress();
 
             if(entry.isMonster) {
@@ -67,6 +70,7 @@ contract CookieCoin is BaseCoin {
                 cookieCount--;
             }
         }
+        emit CookiesShared(cookiesToMint);
     }
 
     modifier validateMinTransaction(uint256 value) {
@@ -81,4 +85,12 @@ contract CookieCoin is BaseCoin {
         return cookieMonsters.countMonsters();
     }
 
+    function mint(uint256 value) public {
+        require(msg.sender == _ownerAddress, "Only the owner can mint new cookies!");
+        super._mint(msg.sender, value);
+    }
+
+    function burn(uint256 value) public {
+        super._burn(msg.sender, value);
+    }
 }
