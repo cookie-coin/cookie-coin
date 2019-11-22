@@ -62,7 +62,7 @@ contract CookieCoin is BaseCoin {
     function _shareCookies(uint256 value) internal {
         uint256 cookiesToMint = value.div(MINIMUM_TRANSACTION_VALUE);
 
-        for (uint256 cookieCount = cookiesToMint; cookieCount > 0 ;) {
+        for (uint256 cookieCount = cookiesToMint; cookieCount > 0;) {
             CookieOperations.MonsterEntry memory entry = cookieMonsters.getNextMonsterAddress();
 
             if(entry.isMonster) {
