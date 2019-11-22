@@ -292,7 +292,7 @@ contract("CookieCoin", (accounts) => {
         assert.equal(otherDudeNewBalance2, 908);
     });
 
-    it("check shared cookies added to cookie-monsters for transactions. should share equally", async() => {       
+    it("check shared cookies added to many cookie-monsters many transactions. should share equally", async() => {       
         const ownerBalanceBefore = 999998733;
         const totalbalanceBefore = 1000000041;
 
@@ -334,4 +334,77 @@ contract("CookieCoin", (accounts) => {
         assert.equal(otherDudeNewBalance5, (1000 + 2));
     });
 
+
+
+    it("the owner mints new coins, should increase its balance and the totalSupply", async() => {
+        const mintedAmount = 5000;
+
+        const mintCoins = await cookie.call('mint', mintedAmount);
+        assert.ok(mintCoins);
+
+        const ownerBalanceAfter = await cookie.call('balanceOf', owner);
+        assert.ok(ownerBalanceAfter);
+        assert.equal(ownerBalanceAfter, 999998747);
+
+        const totalSupplyAfter = await cookie.call('totalSupply');
+        assert.ok(totalSupplyAfter);
+        assert.equal(totalSupplyAfter, 1000005091);
+    });
+
+    
+    it("someone else tries to mint new coins, should do nothing", async() => {
+        const balanceBefore = await cookie.call('balanceOf', otherDude);
+        assert.ok(balanceBefore);
+        const totalSupplyBefore = await cookie.call('totalSupply');
+        assert.ok(totalSupplyBefore);
+
+        const mintedAmount = 5000;
+
+        const mintCoins = await cookie.call('mint', mintedAmount, {from: tronWeb.address.fromHex(otherDude)});
+        assert.ok(mintCoins);
+
+        const balanceAfter = await cookie.call('balanceOf', otherDude);
+        assert.ok(balanceAfter);
+        assert.deepEqual(balanceAfter, balanceBefore);
+
+        const totalSupplyAfter = await cookie.call('totalSupply');
+        assert.ok(totalSupplyAfter);
+        assert.deepEqual(totalSupplyAfter, totalSupplyBefore);
+    });
+
+
+    it("the owner burns new coins, should increase its balance and the totalSupply", async() => {
+        const burnAmount = 5000;
+
+        const burnCoins = await cookie.call('burn', burnAmount);
+        assert.ok(burnCoins);
+
+        const ownerBalanceAfter = await cookie.call('balanceOf', owner);
+        assert.ok(ownerBalanceAfter);
+        assert.equal(ownerBalanceAfter, 999993747);
+
+        const totalSupplyAfter = await cookie.call('totalSupply');
+        assert.ok(totalSupplyAfter);
+        assert.equal(totalSupplyAfter, 1000000091);
+    });
+
+    it("someone else tries to burn coins, should do nothing", async() => {
+        const balanceBefore = await cookie.call('balanceOf', otherDude);
+        assert.ok(balanceBefore);
+        const totalSupplyBefore = await cookie.call('totalSupply');
+        assert.ok(totalSupplyBefore);
+
+        const burnAmount = 5000;
+
+        const burnCoins = await cookie.call('burn', burnAmount, {from: tronWeb.address.fromHex(otherDude)});
+        assert.ok(burnCoins);
+
+        const balanceAfter = await cookie.call('balanceOf', otherDude);
+        assert.ok(balanceAfter);
+        assert.deepEqual(balanceAfter, balanceBefore);
+
+        const totalSupplyAfter = await cookie.call('totalSupply');
+        assert.ok(totalSupplyAfter);
+        assert.deepEqual(totalSupplyAfter, totalSupplyBefore);
+    });
 });

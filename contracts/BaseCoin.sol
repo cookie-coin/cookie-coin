@@ -119,8 +119,6 @@ contract BaseCoin is TRC20able {
      * @param value The amount that will be created.
      */
     function _mint(address account, uint256 value) internal {
-        //TODO remove require(account == _ownerAddress, "Only the owner can mint new cookies!");
-
         _totalSupply = _totalSupply.add(value);
         _balances[account] = _balances[account].add(value);
         emit Transfer(address(0), account, value);
