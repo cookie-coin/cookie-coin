@@ -2,11 +2,12 @@ pragma solidity >=0.4.23 <0.6.0;
 
 import './SafeMath.sol';
 import './TRC20able.sol';
+import './ERC20Detailed.sol';
  
  /**
   * @dev The BaseCoin contains all basic functionality of a TRC20 coin
   */
-contract BaseCoin is TRC20able {
+contract BaseCoin is ERC20Detailed, TRC20able {
 
     using SafeMath for uint256;
 
@@ -17,8 +18,8 @@ contract BaseCoin is TRC20able {
     uint256 internal _totalSupply;
     address internal _ownerAddress;
 
-    constructor(uint256 totalSupply) internal {
-        _totalSupply = totalSupply;
+    constructor(string memory name, string memory symbol, uint8 decimals, uint256 totalSupply) public ERC20Detailed(name,symbol,decimals) {
+        _totalSupply = totalSupply * (10 ** uint256(decimals));
         _ownerAddress = msg.sender;
         _balances[_ownerAddress] = _totalSupply;
     }

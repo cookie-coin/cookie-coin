@@ -17,7 +17,7 @@ contract CookieCoin is BaseCoin {
         uint256 value
     );
 
-    constructor(uint256 totalSupply) BaseCoin(totalSupply) public {
+    constructor(uint256 totalSupply) public BaseCoin("CookieCoin", "COOKIE", 0, totalSupply) {
         cookieMonsters.init();
     }
 

@@ -407,4 +407,21 @@ contract("CookieCoin", (accounts) => {
         assert.ok(totalSupplyAfter);
         assert.deepEqual(totalSupplyAfter, totalSupplyBefore);
     });
+
+    it("name should return correct name of the CookieCoin", async() => {
+        const result = await cookie.call('name');
+        assert.ok(result);
+        assert.equal(result, 'CookieCoin');
+    });
+
+    it("symbol should return correct symbol of the CookieCoin", async() => {
+        const result = await cookie.call('symbol');
+        assert.ok(result);
+        assert.equal(result, 'COOKIE');
+    });
+
+    it("decimals should return correct decimals of the CookieCoin", async() => {
+        const result = await cookie.call('decimals');
+        assert.equal(result, 0);
+    });
 });
